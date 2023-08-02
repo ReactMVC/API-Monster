@@ -22,6 +22,12 @@ To get started with API-Monster, you can use Composer to create a new project. S
 composer create-project darkphp/apimonster myapp
 ```
 
+# API Monster Documentation
+
+Welcome to the API-Monster documentation! Here you will find detailed information on how to use and extend the API-Monster PHP framework for building powerful APIs. 
+
+You can access the full documentation at [https://github.com/ReactMVC/API-Monster/wiki](https://github.com/ReactMVC/API-Monster/wiki).
+
 ## GitHub Repository
 
 API-Monster is hosted on GitHub. You can find the repository at:
