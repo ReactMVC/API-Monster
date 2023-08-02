@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# If the requested URL is a directory
+RewriteCond %{REQUEST_FILENAME} -d
+
+# And if the directory does not contain an index file
+RewriteCond %{REQUEST_FILENAME}/index.php !-f
+RewriteCond %{REQUEST_FILENAME}/index.html !-f
+RewriteCond %{REQUEST_FILENAME}/index.htm !-f
+RewriteCond %{REQUEST_FILENAME}/index.shtml !-f
+RewriteCond %{REQUEST_FILENAME}/index.cgi !-f
+
+# Then return a 403 Forbidden error
+RewriteRule ^ - [F]
+
+# If the requested URL is not a file
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Then rewrite the URL to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]

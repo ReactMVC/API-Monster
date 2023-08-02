@@ -1,0 +1,33 @@
+{
+    "name": "darkphp/apimonster",
+    "description": "Fast PHP API Framework",
+    "version": "1.3.0",
+    "type": "project",
+    "keywords": [
+        "php framework",
+        "php",
+        "php api",
+        "api framework",
+        "framework",
+        "mvc",
+        "api monster",
+        "monster",
+        "apimonster"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/ReactMVC/API-Monster",
+    "autoload": {
+        "psr-4": {
+            "Monster\\": "./",
+            "Monster\\App\\Controllers\\": "Controllers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hossein Pira",
+            "email": "h3dev.pira@gmail.com",
+            "homepage": "https://t.me/h3dev",
+            "role": "Developer"
+        }
+    ]
+}
