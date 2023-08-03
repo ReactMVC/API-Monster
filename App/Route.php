@@ -63,6 +63,12 @@ class Route
         self::setPrefix($previousPrefix);
     }
 
+    public static function closure($method, $path, $closure, $prefix = null)
+    {
+        // Create a new route item with the specified HTTP method, path, and closure as the controller
+        self::$routes[] = new Core($method, self::prefixPath($path, $prefix), $closure);
+    }
+
     public static function run()
     {
         $request_method = $_SERVER['REQUEST_METHOD'];

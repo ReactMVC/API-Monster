@@ -67,7 +67,7 @@ class Core
     // The parameters extracted from the request URI when this route item is matched
     private $params;
 
-    // The regular expression used to match the request URI against the path of this route item
+    // Theregular expression used to match the request URI against the path of this route item
     private $pathRegex;
 
     public function __construct($method, $path, $controller)
@@ -143,32 +143,38 @@ class Core
 
     public function execute()
     {
-        list($controller, $method) = explode('@', $this->controller);
-        $controllerClass = "Monster\\App\\Controllers\\" . $controller;
-
-        // Cache the value of class_exists and call_user_func_array
-        static $classExists = [];
-        static $callUserFuncArray = [];
-
-        if (!isset($classExists[$controllerClass])) {
-            $classExists[$controllerClass] = class_exists($controllerClass);
-        }
-
-        if ($classExists[$controllerClass]) {
-            if (!isset($callUserFuncArray[$controllerClass])) {
-                $callUserFuncArray[$controllerClass] = function ($controllerInstance, $method, $params) {
-                    if ($params) {
-                        $controllerInstance->$method(...$params);
-                    } else {
-                        $controllerInstance->$method();
-                    }
-                };
-            }
-            $controllerInstance = new $controllerClass;
-            $callUserFuncArray[$controllerClass]($controllerInstance, $method, $this->params);
+        if (is_callable($this->controller)) {
+            // If the controller is a closure, execute it directly
+            call_user_func_array($this->controller, $this->params);
         } else {
-            http_response_code(500);
-            echo "Internal Server Error: Controller class not found";
+            // If the controller is a string, parse it into a controller and method to execute
+            list($controller, $method) = explode('@', $this->controller);
+            $controllerClass = "Monster\\App\\Controllers\\" . $controller;
+
+            // Cache the value of class_exists and call_user_func_array
+            static $classExists = [];
+            static $callUserFuncArray = [];
+
+            if (!isset($classExists[$controllerClass])) {
+                $classExists[$controllerClass] = class_exists($controllerClass);
+            }
+
+            if ($classExists[$controllerClass]) {
+                if (!isset($callUserFuncArray[$controllerClass])) {
+                    $callUserFuncArray[$controllerClass] = function ($controllerInstance, $method, $params) {
+                        if ($params) {
+                            $controllerInstance->$method(...$params);
+                        } else {
+                            $controllerInstance->$method();
+                        }
+                    };
+                }
+                $controllerInstance = new $controllerClass;
+                $callUserFuncArray[$controllerClass]($controllerInstance, $method, $this->params);
+            } else {
+                http_response_code(500);
+                echo "Internal Server Error: Controller class not found";
+            }
         }
     }
 }
