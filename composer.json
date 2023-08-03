@@ -29,5 +29,8 @@
             "homepage": "https://t.me/h3dev",
             "role": "Developer"
         }
-    ]
+    ],
+    "require": {
+        "filp/whoops": "^2.15"
+    }
 }

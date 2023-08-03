@@ -1,4 +1,5 @@
 <?php
+use Monster\App\Models\Env;
 use Monster\App\Route;
 
 /*
@@ -65,6 +66,15 @@ use Monster\App\Route;
 
 // Autoload dependencies using Composer
 require_once 'vendor/autoload.php';
+
+// PHP error handling
+$config = new Env('.env');
+$debug = $config->get("APP_DEBUG");
+if ($debug == "true") {
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
+}
 
 // Load application routes
 require 'routes/web.php';
