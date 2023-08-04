@@ -28,11 +28,8 @@ Welcome to the API-Monster documentation! Here you will find detailed informatio
 
 You can access the full documentation at [https://github.com/ReactMVC/API-Monster/wiki](https://github.com/ReactMVC/API-Monster/wiki).
 
-## GitHub Repository
-
-API-Monster is hosted on GitHub. You can find the repository at:
-
-[https://github.com/ReactMVC/API-Monster](https://github.com/ReactMVC/API-Monster)
+## SinglightAPI 
+ SinglightAPI is a library for connect [SinglightJs](https://github.com/mohammadali-arjomand/singlightjs) to [API-Monster](https://github.com/ReactMVC/API-Monster). in **SinglightAPI** you can create SPAs without create API
 
 ## Developer
 
