@@ -1,7 +1,7 @@
 {
     "name": "darkphp/apimonster",
     "description": "Fast PHP API Framework",
-    "version": "1.4.6",
+    "version": "1.4.7",
     "type": "project",
     "keywords": [
         "php framework",
