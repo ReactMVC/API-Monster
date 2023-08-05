@@ -12,16 +12,46 @@ class CORS
     private $maxAge = 0;
     private $allowCredentials = false;
 
-    // Constructor to set CORS settings when creating a new instance of the class
-    public function __construct($allowedOrigins = array(), $allowedMethods = array(), $allowedHeaders = array(), $exposedHeaders = array(), $maxAge = 0, $allowCredentials = false)
+    // Method to set allowed origins
+    public function origin($origins)
     {
-        // Set the allowed origins, methods, headers, exposed headers, max age, and allow credentials properties
-        $this->allowedOrigins = $allowedOrigins;
-        $this->allowedMethods = $allowedMethods;
-        $this->allowedHeaders = $allowedHeaders;
-        $this->exposedHeaders = $exposedHeaders;
-        $this->maxAge = $maxAge;
-        $this->allowCredentials = $allowCredentials;
+        $this->allowedOrigins = $origins;
+        return $this;
+    }
+
+    // Method to set allowed methods
+    public function methods($methods)
+    {
+        $this->allowedMethods = $methods;
+        return $this;
+    }
+
+    // Method to set allowed headers
+    public function headers($headers)
+    {
+        $this->allowedHeaders = $headers;
+        return $this;
+    }
+
+    // Method to set exposed headers
+    public function expose($headers)
+    {
+        $this->exposedHeaders = $headers;
+        return $this;
+    }
+
+    // Method to set max age
+    public function maxAge($age)
+    {
+        $this->maxAge = $age;
+        return $this;
+    }
+
+    // Method to set allow credentials
+    public function credentials($credentials)
+    {
+        $this->allowCredentials = $credentials;
+        return $this;
     }
 
     // Method to set CORS headers based on the properties set in the constructor
