@@ -24,7 +24,9 @@ class Env
                 }
                 // Parse lines in the format KEY=VALUE
                 if (preg_match("/^([^=]+)=(.*)$/", $line, $matches)) {
-                    $envData[$matches[1]] = $matches[2]; // Store the key-value pair in the $envData array
+                    $key = trim($matches[1]);
+                    $value = trim($matches[2], "\" \n\r\t");
+                    $envData[$key] = $value; // Store the key-value pair in the $envData array
                 }
             }
             fclose($file); // Close the environment file
