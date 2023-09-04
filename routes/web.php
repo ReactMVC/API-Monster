@@ -13,6 +13,8 @@ use Monster\App\Route;
 |
 */
 
+Route::get('/', 'HomeController@index');
+Route::post('/', 'HomeController@index');
 Route::get('/api', 'AppController@index');
 
 /*

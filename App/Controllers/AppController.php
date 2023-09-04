@@ -2,10 +2,19 @@
 
 namespace Monster\App\Controllers;
 
+use Monster\App\Models\Json;
+
 class AppController
 {
     public function index()
     {
-        echo "Welcome to API-Monster";
+        $json = new Json();
+
+        $data = [
+            "status" => true,
+            "message" => "API Page"
+        ];
+
+        $json->clean($data, 200);
     }
 }

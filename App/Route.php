@@ -78,7 +78,7 @@ class Route
 
         // If no route matches, return a 404 error
         http_response_code(404);
-        echo "404 Not Found";
+        include_once(__DIR__ . "/../routes/errors/404.html");
     }
 
     // Getters and setters for the private properties
@@ -100,6 +100,11 @@ class Route
         if (empty($prefix)) {
             $prefix = self::$prefix;
         }
+
+        if ($path === '/') {
+            return $prefix;
+        }
+
         return $prefix . $path;
     }
 }
