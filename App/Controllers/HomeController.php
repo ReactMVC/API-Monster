@@ -6,6 +6,6 @@ class HomeController
 {
     public function index()
     {
-        echo "Welcome to API-Monster";
+        view("index", ['name' => 'Hossein']);
     }
 }
