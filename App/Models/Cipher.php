@@ -5,74 +5,42 @@ namespace Monster\App\Models;
 class Cipher
 {
     private $key;
+    private $cipher;
 
-    public function __construct($key)
+    public function __construct($key, $cipher)
     {
         $this->key = $key;
+        $this->cipher = $cipher;
     }
 
-    public function encrypt($message)
+    public function encrypt($data)
     {
-        // Custom encryption algorithm
-        $encrypted = str_rot13($message); // Example: using ROT13 substitution
-
-        // Additional encryption steps using the key
-        $encrypted = $this->xorEncrypt($encrypted);
-
-        return $encrypted;
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
+        $encrypted = openssl_encrypt($data, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
+        return base64_encode($iv . $encrypted);
     }
 
-    public function decrypt($encryptedMessage)
+    public function decrypt($encryptedData)
     {
-        // Reverse the additional encryption steps using the key
-        $decrypted = $this->xorDecrypt($encryptedMessage);
-
-        // Custom decryption algorithm
-        $decrypted = str_rot13($decrypted); // Example: reversing ROT13 substitution
-
-        return $decrypted;
-    }
-
-    private function xorEncrypt($message)
-    {
-        $key = $this->key;
-        $keyLength = strlen($key);
-        $messageLength = strlen($message);
-        $encrypted = '';
-
-        for ($i = 0; $i < $messageLength; $i++) {
-            $encrypted .= $message[$i] ^ $key[$i % $keyLength];
-        }
-
-        return base64_encode($encrypted);
-    }
-
-    private function xorDecrypt($encryptedMessage)
-    {
-        $key = $this->key;
-        $keyLength = strlen($key);
-        $encryptedMessage = base64_decode($encryptedMessage);
-        $messageLength = strlen($encryptedMessage);
-        $decrypted = '';
-
-        for ($i = 0; $i < $messageLength; $i++) {
-            $decrypted .= $encryptedMessage[$i] ^ $key[$i % $keyLength];
-        }
-
-        return $decrypted;
+        $encryptedData = base64_decode($encryptedData);
+        $ivLength = openssl_cipher_iv_length($this->cipher);
+        $iv = substr($encryptedData, 0, $ivLength);
+        $encrypted = substr($encryptedData, $ivLength);
+        return openssl_decrypt($encrypted, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
     }
 }
 
 
-// Usage example:
 /*
 $key = "your_secret_key";
-$cipher = new Cipher($key);
-$message = "Hello, World!";
-$encryptedMessage = $cipher->encrypt($message);
-$decryptedMessage = $cipher->decrypt($encryptedMessage);
+$cipher = "AES-256-CBC";
+$encryption = new Cipher($key, $cipher);
 
-echo "Original message: " . $message . "\n";
-echo "Encrypted message: " . $encryptedMessage . "\n";
-echo "Decrypted message: " . $decryptedMessage . "\n";
+$plainText = "Hello, World!";
+$encryptedText = $encryption->encrypt($plainText);
+$decryptedText = $encryption->decrypt($encryptedText);
+
+echo "Plain Text: " . $plainText . "<br />";
+echo "Encrypted Text: " . $encryptedText . "<br />";
+echo "Decrypted Text: " . $decryptedText . "<br />";
 */
