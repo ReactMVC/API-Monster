@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Hide files and folders starting with a dot
+RewriteRule (^|/)\.(.*)$ - [F]
+
 # If the requested URL is a directory
 RewriteCond %{REQUEST_FILENAME} -d
 
