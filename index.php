@@ -76,6 +76,9 @@ if ($debug == "true") {
     $whoops->register();
 }
 
+// Load application helpers
+require 'routes/helpers/base.php';
+
 // Load application routes
 require 'routes/web.php';
 
