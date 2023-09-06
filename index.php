@@ -1,4 +1,5 @@
 <?php
+
 use Monster\App\Models\Env;
 use Monster\App\Route;
 
@@ -70,10 +71,20 @@ require_once 'vendor/autoload.php';
 // PHP error handling
 $config = new Env('.env');
 $debug = $config->get("APP_DEBUG");
+
 if ($debug == "true") {
     $whoops = new \Whoops\Run;
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     $whoops->register();
+} else {
+    set_error_handler(function () {
+        http_response_code(500);
+        include_once("routes/errors/500.php");
+    });
+    set_exception_handler(function () {
+        http_response_code(500);
+        include_once("routes/errors/500.php");
+    });
 }
 
 // Load application helpers
