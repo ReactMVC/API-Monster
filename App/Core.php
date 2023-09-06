@@ -100,7 +100,7 @@ class Core
         } else {
             // If the controller is a string, parse it into a controller and method to execute
             list($controller, $method) = explode('@', $this->controller);
-            $controllerClass = "Monster\\App\\Controllers\\" . $controller;
+            $controllerClass = "Monster\\App\\Controllers\\" . $controller; // Make sure to escape the backslash
 
             // Cache the value of class_exists and call_user_func_array
             static $classExists = [];
@@ -113,10 +113,15 @@ class Core
             if ($classExists[$controllerClass]) {
                 if (!isset($callUserFuncArray[$controllerClass])) {
                     $callUserFuncArray[$controllerClass] = function ($controllerInstance, $method, $params) {
-                        if ($params) {
-                            $controllerInstance->$method(...$params);
+                        if (method_exists($controllerInstance, $method)) {  // Check if the method exists in the controller class
+                            if ($params) {
+                                $controllerInstance->$method(...$params);
+                            } else {
+                                $controllerInstance->$method();
+                            }
                         } else {
-                            $controllerInstance->$method();
+                            http_response_code(500);
+                            echo "Function not found in controller";
                         }
                     };
                 }
@@ -124,7 +129,7 @@ class Core
                 $callUserFuncArray[$controllerClass]($controllerInstance, $method, $this->params);
             } else {
                 http_response_code(500);
-                echo "Internal Server Error: Controller class not found";
+                echo "Controller class not found";
             }
         }
     }
