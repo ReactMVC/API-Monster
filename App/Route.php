@@ -69,11 +69,26 @@ class Route
         $request_uri = $_SERVER['REQUEST_URI'];
 
         // Use a fast routing algorithm, such as the Radix tree, to match the request URI with the route items
+        $matchedRoute = null;
+
         foreach (self::getRoutes() as $route) {
             if ($route->match($request_method, $request_uri)) {
+                // If a route matches, check if it has parameters and continue searching for matches
+                if (!empty($route->getParams())) {
+                    $matchedRoute = $route;
+                    continue;
+                }
+
+                // If a route matches and has no parameters, execute it immediately
                 $route->execute();
                 return;
             }
+        }
+
+        // If a route with parameters matched, execute it
+        if ($matchedRoute !== null) {
+            $matchedRoute->execute();
+            return;
         }
 
         // If no route matches, return a 404 error
@@ -82,15 +97,24 @@ class Route
     }
 
     // Getters and setters for the private properties
-
     public static function getRoutes()
     {
         return self::$routes;
     }
 
+    public static function setRoutes($routes)
+    {
+        self::$routes = $routes;
+    }
+
     public static function setPrefix($prefix)
     {
         self::$prefix = $prefix;
+    }
+
+    public static function getPrefix()
+    {
+        return self::$prefix;
     }
 
     // Helper function to prefix a path with the global prefix
