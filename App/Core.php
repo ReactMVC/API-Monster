@@ -77,19 +77,21 @@ class Core
     }
 
     // Match the route item against the request method and URI
-
     public function match($request_method, $request_uri)
     {
-        $request_uri = rtrim($request_uri, '/');
-        if ($this->method === $request_method && preg_match($this->pathRegex[$this->path], $request_uri, $matches)) {
+        $parsed_url = parse_url($request_uri);
+        $request_path = $parsed_url['path'];
+
+        $request_path = rtrim($request_path, '/');
+        if ($this->method === $request_method && preg_match($this->pathRegex[$this->path], $request_path, $matches)) {
             $this->params = array_slice($matches, 1);
             return true;
         }
+
         return false;
     }
 
     // Execute the controller method associated with this route item
-
     public function execute()
     {
         if (is_callable($this->controller)) {
