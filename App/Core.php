@@ -35,7 +35,6 @@ class Core
     }
 
     // Getters and setters for the private properties
-
     public function getMethod()
     {
         return $this->method;

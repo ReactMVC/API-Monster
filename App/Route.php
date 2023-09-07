@@ -118,7 +118,6 @@ class Route
     }
 
     // Helper function to prefix a path with the global prefix
-
     public static function prefixPath($path, $prefix = null)
     {
         if (empty($prefix)) {
