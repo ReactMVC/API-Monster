@@ -4,12 +4,10 @@
 Application helpers
 */
 
-use Monster\App\Models\Env;
-
 // Load Thems
-function view($path, $data = [])
+function view($path, $data = [], $javascript = false)
 {
-    // Replace all . to /
+    // Replace all . with /
     $path = str_replace('.', '/', $path);
 
     extract($data);
@@ -17,12 +15,14 @@ function view($path, $data = [])
     // include views folder path
     $viewPath = 'views/' . $path . '.php';
 
-    $env = new Env('.env');
-    $javascript = $env->get("JAVASCRIPT_DATA");
+    // Wrap the view rendering code in a buffer
+    ob_start();
+    include_once $viewPath;
+    $viewContent = ob_get_clean();
 
     if ($javascript == "true") {
-        echo "<script>let monster = JSON.parse('" . json_encode($data) . "')</script>";
+        $viewContent = str_replace('<title>', "<script>let monster = JSON.parse('" . json_encode($data) . "');</script>\n<title>", $viewContent);
     }
 
-    include_once $viewPath;
+    echo $viewContent;
 }
