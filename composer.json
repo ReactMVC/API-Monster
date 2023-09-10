@@ -13,6 +13,10 @@
         "monster",
         "apimonster"
     ],
+    "support": {
+		"issues": "https://github.com/ReactMVC/API-Monster/issues",
+		"source": "https://github.com/ReactMVC/API-Monster"
+	},
     "license": "MIT",
     "homepage": "https://github.com/ReactMVC/API-Monster",
     "autoload": {
