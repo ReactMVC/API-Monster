@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ReactMVC/API-Monster/main/public/Logo%20%5Bwhite%5D.png" alt="Logo" width="240" height="240">
+  <img src="https://raw.githubusercontent.com/ReactMVC/API-Monster/main/public/logo.jpg" alt="Logo" width="388" height="500">
 </p>
 <div align="center">
  
