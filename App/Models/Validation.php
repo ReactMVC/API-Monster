@@ -68,10 +68,10 @@ class Validation
                 return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
             case 'number':
                 return is_numeric($value);
-            case 'regex':
-                return preg_match($params[0], $value) === 1;
             case 'url':
                 return filter_var($value, FILTER_VALIDATE_URL) !== false;
+            case 'regex':
+                return preg_match($params[0], $value) === 1;
                 // Add more validation rules as needed
             default:
                 return false;
