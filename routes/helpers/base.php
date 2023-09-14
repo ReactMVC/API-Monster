@@ -25,4 +25,5 @@ function view($path, $data = [], $javascript = false)
     }
 
     echo $viewContent;
+    exit();
 }
