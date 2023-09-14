@@ -94,6 +94,7 @@ class Route
         // If no route matches, return a 404 error
         http_response_code(404);
         include_once(__DIR__ . "/../routes/errors/404.html");
+        exit();
     }
 
     // Getters and setters for the private properties
