@@ -80,10 +80,12 @@ if ($debug == "true") {
     set_error_handler(function () {
         http_response_code(500);
         include_once("routes/errors/500.php");
+        exit();
     });
     set_exception_handler(function () {
         http_response_code(500);
         include_once("routes/errors/500.php");
+        exit();
     });
 }
 
