@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkPHP;
+namespace Monster\App\Models;
 
 /**
  * Http - A simple PHP class for making HTTP requests using cURL
