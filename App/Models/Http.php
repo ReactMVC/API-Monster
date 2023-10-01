@@ -1,6 +1,6 @@
 <?php
 
-namespace Monster\App\Models;
+namespace DarkPHP;
 
 /**
  * Http - A simple PHP class for making HTTP requests using cURL
@@ -17,18 +17,6 @@ class Http
     {
         $this->ch = curl_init();
         $this->setDefaults();
-    }
-
-    /**
-     * Header - adds a single HTTP header to the request
-     *
-     * @param string $header - the header to add
-     * @return Http - returns the Http object for chaining
-     */
-    public function Header($header)
-    {
-        $this->options[CURLOPT_HTTPHEADER][] = $header;
-        return $this;
     }
 
     /**
@@ -121,6 +109,27 @@ class Http
     }
 
     /**
+     * getHeaders - returns the response headers
+     *
+     * @return array - the response headers
+     */
+    public function getHeaders()
+    {
+        curl_setopt($this->ch, CURLOPT_HEADER, true);
+        curl_setopt($this->ch, CURLOPT_NOBODY, true);
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, false);
+        curl_setopt($this->ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) use (&$headers) {
+            $trimmedHeader = trim($header);
+            if (!empty($trimmedHeader)) {
+                $headers[] = $trimmedHeader;
+            }
+            return strlen($header);
+        });
+        curl_exec($this->ch);
+        return $headers ?? [];
+    }
+
+    /**
      * getStatus - returns the HTTP status code of the response
      *
      * @return int - the HTTP status code
@@ -129,6 +138,58 @@ class Http
     {
         return curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
     }
+
+    /**
+     * Encoding - sets the encoding(s) for the request
+     *
+     * @param string|array $encodings - the encoding(s) to set
+     * @return Http - returns the Http object for chaining
+     */
+    public function Encoding($encodings)
+    {
+        if (is_array($encodings)) {
+            $encodings = implode(',', $encodings);
+        }
+        $this->Option(CURLOPT_ENCODING, $encodings);
+        return $this;
+    }
+
+    /**
+     * MaxRedirects - sets the maximum number of redirects to follow
+     *
+     * @param int $maxRedirects - the maximum number of redirects
+     * @return Http - returns the Http object for chaining
+     */
+    public function MaxRedirects($maxRedirects)
+    {
+        $this->Option(CURLOPT_MAXREDIRS, $maxRedirects);
+        return $this;
+    }
+
+    /**
+     * VerifyPeer - sets whether to verify the peer's SSL certificate
+     *
+     * @param bool $verify - whether to verify the peer's SSL certificate
+     * @return Http - returns the Http object for chaining
+     */
+    public function VerifyPeer($verify)
+    {
+        $this->Option(CURLOPT_SSL_VERIFYPEER, $verify);
+        return $this;
+    }
+
+    /**
+     * Proxy - sets the proxy for the request
+     *
+     * @param string $proxy - the proxy to set
+     * @return Http - returns the Http object for chaining
+     */
+    public function Proxy($proxy)
+    {
+        $this->Option(CURLOPT_PROXY, $proxy);
+        return $this;
+    }
+
 
     /**
      * setDefaults - sets some default cURL options for the request
