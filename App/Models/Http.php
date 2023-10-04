@@ -140,6 +140,22 @@ class Http
     }
 
     /**
+     * getBody - returns the response body
+     *
+     * @return string - the response body
+     */
+    public function getBody()
+    {
+        curl_setopt($this->ch, CURLOPT_HEADER, 0);
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($this->ch);
+        if ($response === false) {
+            throw new \Exception(curl_error($this->ch), curl_errno($this->ch));
+        }
+        return $response;
+    }
+
+    /**
      * Encoding - sets the encoding(s) for the request
      *
      * @param string|array $encodings - the encoding(s) to set
