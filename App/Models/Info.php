@@ -13,7 +13,7 @@ class Info
         Retrieves the domain name of the server.
         @return string The domain name of the server.
      */
-    public function Domain()
+    public static function Domain()
     {
         return $_SERVER['SERVER_NAME'];
     }
@@ -22,7 +22,7 @@ class Info
         Retrieves the host name used in the HTTP request.
         @return string The host name used in the HTTP request.
      */
-    public function Host()
+    public static function Host()
     {
         return $_SERVER['HTTP_HOST'];
     }
@@ -31,7 +31,7 @@ class Info
         Retrieves the IP address of the server's host.
         @return string The IP address of the server's host.
      */
-    public function HostIP()
+    public static function HostIP()
     {
         return gethostbyname($_SERVER['SERVER_NAME']);
     }
@@ -40,7 +40,7 @@ class Info
         Retrieves the IP address of the user making the request.
         @return string The IP address of the user making the request.
      */
-    public function UserIP()
+    public static function UserIP()
     {
         return $_SERVER['REMOTE_ADDR'];
     }
@@ -49,7 +49,7 @@ class Info
         Retrieves the cookies sent by the user.
         @return array An associative array of cookies sent by the user.
      */
-    public function Cookies()
+    public static function Cookies()
     {
         return $_COOKIE;
     }
@@ -58,7 +58,7 @@ class Info
         Retrieves the full cookie string sent by the user.
         @return string The full cookie string sent by the user.
      */
-    public function FullCookie()
+    public static function FullCookie()
     {
         return $_SERVER['HTTP_COOKIE'];
     }
@@ -67,7 +67,7 @@ class Info
         Retrieves the path of the current request.
         @return string The path of the current request.
      */
-    public function Path()
+    public static function Path()
     {
         return $_SERVER['REQUEST_URI'];
     }
@@ -76,7 +76,7 @@ class Info
         Retrieves the type of device used by the user.
         @return string The type of device used by the user (Mobile, Tablet, or Desktop).
      */
-    public function Device()
+    public static function Device()
     {
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         if (strpos($userAgent, 'mobile') !== false) {
@@ -92,7 +92,7 @@ class Info
         Retrieves the user agent string sent by the user.
         @return string The user agent string sent by the user.
      */
-    public function UserAgent()
+    public static function UserAgent()
     {
         return $_SERVER['HTTP_USER_AGENT'];
     }
@@ -101,7 +101,7 @@ class Info
         Retrieves the HTTP headers sent by the user.
         @return array An associative array of HTTP headers sent by the user.
      */
-    public function getHeaders()
+    public static function getHeaders()
     {
         $headers = [];
         foreach ($_SERVER as $name => $value) {
@@ -115,7 +115,7 @@ class Info
     /*
         Echoes the cookies sent by the user.
      */
-    public function echoCookies()
+    public static function echoCookies()
     {
         $cookies = $_COOKIE;
         foreach ($cookies as $key => $value) {
@@ -129,7 +129,7 @@ class Info
 
         @return string The operating system of the user.
      */
-    public function getOS()
+    public static function getOS()
     {
         $userAgent = $_SERVER['HTTP_USER_AGENT'];
         $devices = [
