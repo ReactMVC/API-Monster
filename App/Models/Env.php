@@ -2,44 +2,86 @@
 
 namespace Monster\App\Models;
 
+/**
+ * The Env class is responsible for reading and parsing environment variables from a file.
+ */
 class Env
 {
+    /**
+     * @var array Holds the environment data after parsing.
+     */
     private $envData;
 
+    /**
+     * Constructor for the Env class.
+     *
+     * @param string $envFilePath The file path to the .env file.
+     */
     public function __construct($envFilePath)
     {
+        // Read and store the environment variables from the file.
         $this->envData = $this->readEnvFile($envFilePath);
     }
 
-    // Read the environment file and parse its contents into an associative array
+    /**
+     * Reads the environment file and parses the variables into an array.
+     *
+     * @param string $envFilePath The file path to the .env file.
+     * @return array The parsed environment variables.
+     */
     private function readEnvFile($envFilePath)
     {
-        $envData = array(); // Initialize an empty array to store the environment data
-        $file = fopen($envFilePath, "r"); // Open the environment file for reading
+        // Initialize an empty array to hold the environment data.
+        $envData = array();
+        // Open the file for reading.
+        $file = fopen($envFilePath, "r");
         if ($file) {
+            // Read each line of the file.
             while (($line = fgets($file)) !== false) {
-                // Ignore lines starting with # or empty lines
+                // Skip lines that are comments or empty.
                 if (preg_match("/^\s*(#|$)/", $line)) {
                     continue;
                 }
-                // Parse lines in the format KEY=VALUE
+                // Match lines that look like key=value pairs.
                 if (preg_match("/^([^=]+)=(.*)$/", $line, $matches)) {
+                    // Trim whitespace around the key.
                     $key = trim($matches[1]);
-                    $value = trim($matches[2], "\" \n\r\t");
-                    $envData[$key] = $value; // Store the key-value pair in the $envData array
+                    // Trim whitespace and quotes around the value.
+                    $value = trim($matches[2], " \n\r\t");
+                    // Check if the value is an array (starts with [ and ends with ]).
+                    if (preg_match("/^\[(.*)\]$/", $value, $arrayMatches)) {
+                        // Split the value by comma and trim each element.
+                        $arrayValues = array_map(function ($item) {
+                            return trim($item, "\" \t\n\r");
+                        }, explode(',', trim($arrayMatches[1])));
+                        // Assign the array to the key in the environment data.
+                        $envData[$key] = $arrayValues;
+                    } else {
+                        // Assign the value to the key in the environment data.
+                        $envData[$key] = trim($value, "\"");
+                    }
                 }
             }
-            fclose($file); // Close the environment file
+            // Close the file after reading.
+            fclose($file);
         }
-        return $envData; // Return the parsed environment data
+        // Return the parsed environment data.
+        return $envData;
     }
 
-    // Retrieve the value of a specific key from the environment data
+    /**
+     * Retrieves the value of an environment variable by key.
+     *
+     * @param string $key The key of the environment variable to retrieve.
+     * @return mixed|null The value of the environment variable, or null if not found.
+     */
     public function get($key)
     {
+        // Check if the key exists in the environment data and return its value.
         if (isset($this->envData[$key])) {
-            return trim($this->envData[$key], "\""); // Remove surrounding double quotes if present
+            return $this->envData[$key];
         }
-        return null; // Return null if the key is not found
+        // Return null if the key does not exist.
+        return null;
     }
 }
